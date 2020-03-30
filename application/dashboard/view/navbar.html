@@ -1,0 +1,8 @@
+                            <li><a data-pjax href="{:url('dashboard/Index/index', '', '')}">首页</a></li>
+{if (isAllowed('dashboard_user'))}                            <li><a data-pjax href="{:url('dashboard/User/index', '', '')}">用户管理</a></li>
+{/if}
+{if (isAllowed('dashboard_user_group'))}                            <li><a data-pjax href="{:url('dashboard/UserGroup/index', '', '')}">用户组管理</a></li>
+{/if}
+{if (isAllowed('dashboard_config'))}                            <li><a data-pjax href="{:url('dashboard/Config/index', '', '')}">系统设置</a></li>
+{/if}
+                            <li><a data-pjax href="{:url('dashboard/RebuildUserGroupCache/index', '', '')}">重建用户组权限缓存（Debug 功能）</a></li>
