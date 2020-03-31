@@ -49,7 +49,7 @@ var submitForm = function(formDom) {
     submitButton.attr('disabled', 'disabled');
 
     $.ajax({
-        type: 'PUT',
+        type: 'POST',
         url: action,
         data: fDom.serialize()
     }).then(function(data, status) {

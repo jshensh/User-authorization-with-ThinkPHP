@@ -26,7 +26,7 @@ class Config extends DashboardApiBase
 
     public function update(Request $request)
     {
-        $params = $request->put();
+        $params = $request->post();
 
         $list = [];
 
