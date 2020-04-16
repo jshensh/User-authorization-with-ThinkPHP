@@ -175,7 +175,7 @@ $.fn.customVal = function() {
                 }
             }
             if (usedSelect2) {
-                return this.val(selectedValueObj).trigger("change").trigger('select2:select');
+                return this.val(selectedValueObj).trigger("change");
             } else {
                 return this.val(selectedValueObj);
             }
