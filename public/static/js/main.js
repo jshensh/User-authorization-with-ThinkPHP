@@ -139,6 +139,10 @@ var clearInput = function() {
     }
 };
 
+var isArray = function (o) {
+    return Object.prototype.toString.call(o) === '[object Array]';
+};
+
 $.fn.customVal = function() {
     if (arguments.length > 1) {
         return this;
@@ -155,19 +159,25 @@ $.fn.customVal = function() {
         if (!arguments.length) {
             return this.val();
         } else {
-            var optionsDom = this.find("option"), valueObj = [];
+            var optionsDom = this.find("option"), valueObj = [], selectedValueObj = [];
             for (var oi = 0; oi < optionsDom.length; oi++) {
                 valueObj.push(optionsDom[oi].value);
             }
             for (var i = 0; i < arguments[0].length; i++) {
                 if (valueObj.indexOf(arguments[0][i]) < 0) {
-                    this.append($('<option />').attr("value", arguments[0][i]).text(arguments[0][i]));
+                    if (typeof arguments[0][i] === 'object') {
+                        this.append($('<option />').attr("value", arguments[0][i]['value']).text(arguments[0][i]['text']));
+                        selectedValueObj.push(arguments[0][i]['value']);
+                    } else if (typeof arguments[0][i] === 'string') {
+                        this.append($('<option />').attr("value", arguments[0][i]).text(arguments[0][i]));
+                        selectedValueObj.push(arguments[0][i]);
+                    }
                 }
             }
             if (usedSelect2) {
-                return this.val(arguments[0]).trigger("change");
+                return this.val(selectedValueObj).trigger("change").trigger('select2:select');
             } else {
-                return this.val(arguments[0]);
+                return this.val(selectedValueObj);
             }
         }
     } else if (tag === "textarea") {
@@ -186,17 +196,19 @@ $.fn.customVal = function() {
                     this.filter(":checked").each(function() {
                         result.push($(this).val());
                     });
-                    return result;
+                    return (type === 'radio' ? result[0] : result);
                 } else {
-                    if (typeof arguments[0] === "string") {
+                    if (typeof arguments[0] !== "object") {
                         try {
                             var tmp = JSON.parse(arguments[0]);
+                            if (typeof tmp !== 'object') {
+                                throw false;
+                            }
                             arguments[0] = tmp;
                         } catch(e) {
                             arguments[0] = [arguments[0]];
                         }
-                    }
-                    if (typeof arguments[0] !== "object") {
+                    } else {
                         return this;
                     }
                     return this.val(arguments[0]);
@@ -241,7 +253,7 @@ $(function() {
             if (aDom.length === 1) {
                 if (aDom.data('href') === location.pathname) {
                     $(childrenLi[i]).addClass('active');
-                } 
+                }
             } else {
                 addNavActive($(childrenLi[i]).find('ul.dropdown-menu'));
             }
