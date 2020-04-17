@@ -38,7 +38,7 @@ CREATE TABLE `config` (
 --
 
 INSERT INTO `config` (`k`, `v`) VALUES
-('sys_user_register_group', '2');
+('sys_user_register_group', '1');
 
 -- --------------------------------------------------------
 
@@ -79,14 +79,6 @@ CREATE TABLE `user` (
   `pwd` varchar(60) NOT NULL,
   `group_id` int(10) UNSIGNED NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- 转存表中的数据 `user`
---
-
-INSERT INTO `user` (`id`, `name`, `pwd`, `group_id`) VALUES
-(1, 'root', '$2y$10$xlwkUFWqy5MeGFJvw8XZOeUH1MlbtYOMjMiWYD2uiSgVp0UT2m3H6', 1),
-(2, 'guest', '$2y$10$HAlUQGBs8P72oRLlsDVpvuQcWUehGTt0SGf1U/WXiabhuVUfLz8wu', 2);
 
 -- --------------------------------------------------------
 
@@ -188,7 +180,7 @@ ALTER TABLE `permission`
 -- 使用表AUTO_INCREMENT `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- 使用表AUTO_INCREMENT `user_group`
