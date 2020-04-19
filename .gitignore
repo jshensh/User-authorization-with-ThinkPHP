@@ -9,5 +9,4 @@ config/database.php
 extend
 runtime
 .user.ini
-think
 CHANGELOG.md
