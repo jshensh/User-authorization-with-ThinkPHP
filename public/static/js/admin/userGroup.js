@@ -140,9 +140,6 @@ $(function() {
 
         controller: {
             loadData: function (filter) {
-                if (typeof window.gridFilter !== "undefined") {
-                    filter["filter"] = window.gridFilter;
-                }
                 return $.ajax({
                     type: "GET",
                     url: "/api/v1/admin/UserGroup",

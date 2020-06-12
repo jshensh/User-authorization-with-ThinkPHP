@@ -227,22 +227,6 @@ $.fn.customVal = function() {
     }
 };
 
-var searchWithForm = function(container, buttonDom) {
-    window.gridFilter = {};
-    var params = [];
-    for (var i = 2; i < arguments.length; i++) {
-        window.gridFilter[arguments[i].substr(1)] = $(arguments[i]).customVal();
-        if ($(arguments[i]).customVal()) {
-            params.push(arguments[i].substr(1) + '=' + encodeURIComponent($(arguments[i]).customVal()));
-        }
-    }
-    $(buttonDom).prop("disabled", true);
-    $(container).jsGrid("loadData").then(function() {
-        $(buttonDom).prop("disabled", false);
-    });
-    return params;
-};
-
 $(function() {
     customPjax("a[data-pjax]", $(this).data("custom-pjax-render-to") || "#mainContainer");
 
@@ -285,3 +269,21 @@ $(function() {
         activeParentUl.length && (activeParentUl.parent().addClass('active'));
     });
 });
+
+
+
+$.fn.serializeObject = function() {
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
