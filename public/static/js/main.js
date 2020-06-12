@@ -198,6 +198,9 @@ $.fn.customVal = function() {
                     });
                     return (type === 'radio' ? result[0] : result);
                 } else {
+                    this.filter(":checked").each(function() {
+                        $(this).prop('checked', false);
+                    });
                     if (typeof arguments[0] !== "object") {
                         try {
                             var tmp = JSON.parse(arguments[0]);
