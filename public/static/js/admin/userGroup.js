@@ -8,13 +8,13 @@ $(function() {
     firstCheckBoxField.prototype = new jsGrid.Field({
         headerTemplate: function () {
             return $("<input>").attr("type", "checkbox").attr("id", "checkall").click(function () {
-                $("input[firstcheckbox]").prop("checked", $(this).prop("checked"));
+                $('input[name="firstCheckbox[]"]').prop("checked", $(this).prop("checked"));
             });
         },
 
         itemTemplate: function (value) {
-            return this._dom = $("<input>").attr("type", "checkbox").attr("firstcheckbox", true).val(value).click(function () {
-                var firstCheckBox = $("input[firstcheckbox]"),
+            return this._dom = $("<input>").attr("type", "checkbox").attr("name", "firstCheckbox[]").val(value).click(function () {
+                var firstCheckBox = $('input[name="firstCheckbox[]"]'),
                     checkedFirstCheckBox = firstCheckBox.filter(":checked");
                 $("#checkall").prop("checked", firstCheckBox.length === checkedFirstCheckBox.length && firstCheckBox.length);
             });
@@ -131,7 +131,7 @@ $(function() {
         },
 
         rowClick: function (args) {
-            var checkbox = $(args["event"]["currentTarget"]).find("input[firstcheckbox]");
+            var checkbox = $(args["event"]["currentTarget"]).find('input[name="firstCheckbox[]"]');
             if ((!$(args["event"]["target"]).is('td') && !$(args["event"]["target"]).is('p') && !$(args["event"]["target"]).is('input')) || checkbox[0] === args["event"]["target"]) {
                 return true;
             }
