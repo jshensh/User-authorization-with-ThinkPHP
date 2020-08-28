@@ -6,7 +6,7 @@ use app\api\model\v1\UserGroup as UserGroupModel;
 use app\api\model\v1\Permission as PermissionModel;
 use app\api\model\v1\UserGroupPermission as UserGroupPermissionModel;
 use app\api\controller\v1\DashboardApiBase;
-use app\common\controller\UserGroupPermissionCache;
+use app\common\service\UserGroupPermissionCache;
 use think\Request;
 
 class UserGroup extends DashboardApiBase

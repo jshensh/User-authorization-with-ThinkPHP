@@ -1,5 +1,5 @@
 <?php
-namespace app\common\controller;
+namespace app\common\service;
 
 use app\common\model\UserGroupPermission as UserGroupPermissionModel;
 use think\Controller;

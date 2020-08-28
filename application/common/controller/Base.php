@@ -4,7 +4,7 @@ namespace app\common\controller;
 use think\Controller;
 use think\facade\Session;
 use app\common\model\User as UserModel;
-use app\common\controller\UserGroupPermissionCache;
+use app\common\service\UserGroupPermissionCache;
 
 class Base extends Controller
 {

@@ -1,6 +1,6 @@
 <?php
 use think\facade\Session;
-use app\common\controller\UserGroupPermissionCache;
+use app\common\service\UserGroupPermissionCache;
 
 if (!function_exists('getPermission')) {
     function getPermission()
