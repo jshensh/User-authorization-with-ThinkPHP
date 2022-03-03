@@ -6,6 +6,7 @@ use app\api\model\v1\UserGroup as UserGroupModel;
 use app\api\controller\v1\DashboardApiBase;
 use think\Request;
 use think\facade\Session;
+use app\common\service\Paginator;
 
 class User extends DashboardApiBase
 {
@@ -17,27 +18,9 @@ class User extends DashboardApiBase
             return json(['status' => 'error', 'error' => '暂无操作权限'], 400);
         }
 
-        $params = $request->get();
-
-        $index = isset($params["pageIndex"]) ? $params["pageIndex"] : 1;
-        $size = isset($params["pageSize"]) ? $params["pageSize"] : 20;
-        $filter = isset($params["filter"]) && is_array($params["filter"]) ? $params["filter"] : [];
-        $sortField = (isset($params["sortField"]) && in_array($params["sortField"], ['name'])) ? $params["sortField"] : 'id';
-        $sortOrder = isset($params["sortOrder"]) && $params["sortOrder"] === 'desc' ? 'desc' : 'asc';
-
-        if (!is_numeric($index) || $index < 1) {
-            $index = 1;
-        }
-        if ($size < 1 || !is_numeric($size)) {
-            $size = 20;
-        }
-
-        $users = UserModel::with('userGroup')->order($sortField, $sortOrder)->field('pwd', true);
-
-        return json([
-            "itemsCount" => UserModel::count(),
-            "data" => $users->limit(($index - 1) * $size, $size)->select()
-        ]);
+        $users = UserModel::with('userGroup')->field('pwd', true);
+        
+        return json(Paginator::create($users));
     }
 
     public function save(Request $request)

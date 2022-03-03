@@ -8,6 +8,7 @@ use app\api\model\v1\UserGroupPermission as UserGroupPermissionModel;
 use app\api\controller\v1\DashboardApiBase;
 use app\common\service\UserGroupPermissionCache;
 use think\Request;
+use app\common\service\Paginator;
 
 class UserGroup extends DashboardApiBase
 {
@@ -19,37 +20,9 @@ class UserGroup extends DashboardApiBase
             return json(['status' => 'error', 'error' => '暂无操作权限'], 400);
         }
 
-        $params = $request->get();
+        $groups = Paginator::create(UserGroupModel::class)->allowSearch(['name']);
 
-        $index = isset($params["pageIndex"]) ? $params["pageIndex"] : 1;
-        $size = isset($params["pageSize"]) ? $params["pageSize"] : 20;
-        $filter = isset($params["filter"]) && is_array($params["filter"]) ? $params["filter"] : [];
-        $sortField = (isset($params["sortField"]) && in_array($params["sortField"], ['name'])) ? $params["sortField"] : 'id';
-        $sortOrder = isset($params["sortOrder"]) && $params["sortOrder"] === 'desc' ? 'desc' : 'asc';
-
-        if (!is_numeric($index) || $index < 1) {
-            $index = 1;
-        }
-        if ($size < 1 || !is_numeric($size)) {
-            $size = 20;
-        }
-
-        $groups = UserGroupModel::order($sortField, $sortOrder);
-
-        foreach ($filter as $key => $value) {
-            switch ($key) {
-                case "name":
-                    if ($value) {
-                        $groups = $groups->where($key, 'like', "%{$value}%");
-                    }
-                    break;
-            }
-        }
-
-        return json([
-            "itemsCount" => UserGroupModel::count(),
-            "data" => $groups->limit(($index - 1) * $size, $size)->select()
-        ]);
+        return json($groups);
     }
 
     public function read($id)
