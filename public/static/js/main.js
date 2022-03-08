@@ -48,7 +48,7 @@ var customPjax = function(aSelector, divSelector) {
                 document.title = newTitle;
                 $(document).trigger(pjaxEndEvent);
                 $(divSelector).find("a[data-pjax]").each(function() {
-                    customPjax(this, $(this).data("custom-pjax-render-to") || "#pjax");
+                    customPjax(this, $(this).data("custom-pjax-render-to") || "#mainContainer");
                 });
             });
         } else {
@@ -56,7 +56,7 @@ var customPjax = function(aSelector, divSelector) {
             document.title = newTitle;
             $(document).trigger(pjaxEndEvent);
             $(divSelector).find("a[data-pjax]").each(function() {
-                customPjax(this, $(this).data("custom-pjax-render-to") || "#pjax");
+                customPjax(this, $(this).data("custom-pjax-render-to") || "#mainContainer");
             });
         }
     };
