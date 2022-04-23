@@ -1,27 +1,72 @@
-var doAjaxPromise = function(ajaxUrl, ajaxType, ajaxData) {
-    ajaxData["_t"] = new Date().getTime();
-    var dataType = typeof arguments[3] !== "undefined" && typeof arguments[3]["dataType"] !== "undefined" ? arguments[3]["dataType"] : "json";
-    var ajaxObj = {
-        type: ajaxType,
-        url: ajaxUrl,
-        dataType: dataType,
-        timeout: 5000,
-        data: ajaxData,
-    };
-    var authToken = false, pjax = false;
-    if (typeof arguments[3] === "object") {
-        if (typeof arguments[3]["X-PJAX"] !== "undefined") {
-            pjax = arguments[3]["X-PJAX"];
-            delete arguments[3]["X-PJAX"];
+var doAjaxPromise = function (url, method, data) {
+    var options = Object.assign({'dataType': 'json'}, typeof arguments[3] === "object" ? arguments[3] : {});
+    return new Promise((resolve, reject) => {
+        var sendWithData = true;
+        method = method.toUpperCase();
+        if (['GET', 'DELETE', 'OPTIONS'].indexOf(method) > -1 && data instanceof FormData) {
+            url = (url.match(/\?/) ? `${url}&` : `${url}?`) + '_t=' + new Date().getTime() + (data ? '&' + new URLSearchParams(data).toString() : '');
+            sendWithData = false;
         }
-        $.extend(ajaxObj, arguments[3]);
+        const xhr = new XMLHttpRequest();
+
+        xhr.open(method, url, true);
+        xhr.responseType = options['dataType'];
+        xhr.timeout = 5000;
+        if (typeof options['X-PJAX'] !== 'undefined') {
+            xhr.setRequestHeader('X-PJAX', options['X-PJAX']);
+        }
+        xhr.onload = () => {
+            if (xhr.status === 200) {
+                resolve(xhr, 'success');
+            } else {
+                reject(xhr, 'error');
+            }
+        };
+        xhr.onerror = () => {
+            reject(xhr, 'error');
+        };
+
+        if (sendWithData) {
+            xhr.send(data);
+        } else {
+            xhr.send();
+        }
+    });
+};
+
+var saveFile = function(xhr) {
+    if (typeof xhr.getAllResponseHeaders !== 'undefined') {
+        responseHeaderCodeEditor.setValue(xhr.getAllResponseHeaders());
     }
-    ajaxObj.beforeSend = function (XHR) {
-        if (pjax) {
-            XHR.setRequestHeader('X-PJAX', pjax);
+
+    var fileName = (xhr.getResponseHeader('Content-Disposition') ?? '').match(/filename="?(.*?)"?$/);
+
+    if (fileName && typeof fileName[1] !== 'undefined') {
+        if (window.navigator.msSaveOrOpenBlob) {
+            navigator.msSaveBlob(xhr.response, filename);
+        } else {
+            const link = document.createElement('a');
+            const body = document.querySelector('body');
+
+            link.href = window.URL.createObjectURL(xhr.response); // 创建对象url
+            link.download = fileName[1];
+
+            // fix Firefox
+            link.style.display = 'none';
+            body.appendChild(link);
+
+            link.click();
+            body.removeChild(link);
+
+            window.URL.revokeObjectURL(link.href); // 通过调用 URL.createObjectURL() 创建的 URL 对象
         }
+        return;
+    }
+    var reader = new FileReader();
+    reader.onload = function(event){
+        responseBodyCodeEditor.setValue(reader.result);
     };
-    return jQuery.ajax(ajaxObj);
+    reader.readAsText(xhr.response, 'utf-8');
 };
 
 var customPjax = function(aSelector, divSelector) {
@@ -77,17 +122,14 @@ var customPjax = function(aSelector, divSelector) {
             $(this).trigger($.Event('customPjax:start'));
             var loadDataAction = function(uri) {
                 doAjaxPromise(uri, "get", {}, {"X-PJAX": "true", "dataType": "text"})
-                    .success(function(data, status) {
-                        if (status && data) {
-                            var newTitleTmp = data.match(/<title>(.*?)<\/title>/),
+                    .then(function(xhr) {
+                        if (xhr.status === 200) {
+                            var newTitleTmp = xhr.responseText.match(/<title>(.*?)<\/title>/),
                                 newTitle = newTitleTmp ? newTitleTmp[1] : '';
                             if (history.pushState) {
                                 window.history.pushState('', newTitle, uri);
-                                if (!arguments[2]) {
-                                    setMenu(location.pathname);
-                                }
                             }
-                            renderToDom(divSelector, data, newTitle);
+                            renderToDom(divSelector, xhr.responseText, newTitle);
                         }
                     });
             };
@@ -104,10 +146,10 @@ var customPjax = function(aSelector, divSelector) {
             $(divSelector).hide();
             var uri = location.pathname;
             doAjaxPromise(uri, "get", {}, {"X-PJAX": "true", "dataType": "text"})
-                .success(function(data, status) {
-                    if (status && data) {
-                        var newTitle = data.match(/<title>(.*?)<\/title>/)[1];
-                        renderToDom(divSelector, data, newTitle);
+                .then(function(xhr) {
+                    if (xhr.status === 200) {
+                        var newTitle = xhr.responseText.match(/<title>(.*?)<\/title>/)[1];
+                        renderToDom(divSelector, xhr.responseText, newTitle);
                     }
                 });
         };
@@ -129,7 +171,7 @@ var getQueryString = function(name) {
     }
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
     var r = window.location.search.substr(1).match(reg);
-    if (r != null) return unescape(r[2]);
+    if (r != null) return decodeURIComponent(r[2]);
     return null;
 };
 
@@ -272,3 +314,15 @@ $(function() {
         activeParentUl.length && (activeParentUl.parent().addClass('active'));
     });
 });
+
+var searchWithForm = function(container, buttonDom) {
+    window.gridFilter = {};
+    for (var i = 2; i < arguments.length; i++) {
+        window.gridFilter[arguments[i].substr(1)] = $(arguments[i]).customVal();
+    }
+    $(buttonDom).prop("disabled", true);
+    $(container).jsGrid("reset");
+    $(container).jsGrid("loadData").then(function() {
+        $(buttonDom).prop("disabled", false);
+    });
+};

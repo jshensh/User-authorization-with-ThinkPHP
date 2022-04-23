@@ -226,7 +226,8 @@ $(function() {
     };
 
     doAjaxPromise('/api/v1/admin/Permission', 'get', {})
-        .success(function(data) {
+        .then(function(xhr) {
+            data = xhr.response;
             createPermissionTreeView(data);
             var pathArr = location.pathname.split('/'),
                 groupId = pathArr[pathArr.length - 1].match(/^\d+/);
@@ -235,13 +236,14 @@ $(function() {
             } else {
                 $('button[type="submit"]').removeAttr('disabled');
             }
-        }).fail(function(data) {
+        }).catch(function(data) {
             toastr.error(typeof data["responseJSON"] === 'undefined' || !data["responseJSON"] ? '未知错误' : (data["responseJSON"]["error"] || '未知错误'), "请求失败");
         });
 
     var getGroupInfo = function(groupId) {
         doAjaxPromise('/api/v1/admin/UserGroup/' + groupId, 'get', {})
-            .success(function(data) {
+            .then(function(xhr) {
+                data = xhr.response;
                 $('#editUserGroupForm input[name="name"]').val(data['name']);
                 $('#editUserGroupForm input[name="id"]').val(groupId);
 
@@ -254,7 +256,7 @@ $(function() {
                     }
                 }
                 $('button[type="submit"]').removeAttr('disabled');
-            }).fail(function(data) {
+            }).catch(function(data) {
                 $('#mainContainer').html($('<div class="alert alert-danger" role="alert">请求项不存在，点击<a href="/dashboard/user_group/index.html" class="alert-link" data-pjax>这里</a>返回用户组列表</div>'));
                 customPjax("#mainContainer a[data-pjax]", "#mainContainer");
             });
