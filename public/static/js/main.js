@@ -15,6 +15,7 @@ var doAjaxPromise = function (url, method, data) {
         if (typeof options['X-PJAX'] !== 'undefined') {
             xhr.setRequestHeader('X-PJAX', options['X-PJAX']);
         }
+        xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
         xhr.onload = () => {
             if (xhr.status === 200) {
                 resolve(xhr, 'success');
@@ -35,10 +36,6 @@ var doAjaxPromise = function (url, method, data) {
 };
 
 var saveFile = function(xhr) {
-    if (typeof xhr.getAllResponseHeaders !== 'undefined') {
-        responseHeaderCodeEditor.setValue(xhr.getAllResponseHeaders());
-    }
-
     var fileName = (xhr.getResponseHeader('Content-Disposition') ?? '').match(/filename="?(.*?)"?$/);
 
     if (fileName && typeof fileName[1] !== 'undefined') {
@@ -48,6 +45,7 @@ var saveFile = function(xhr) {
             const link = document.createElement('a');
             const body = document.querySelector('body');
 
+            console.log(fileName[1])
             link.href = window.URL.createObjectURL(xhr.response); // 创建对象url
             link.download = fileName[1];
 
@@ -62,11 +60,6 @@ var saveFile = function(xhr) {
         }
         return;
     }
-    var reader = new FileReader();
-    reader.onload = function(event){
-        responseBodyCodeEditor.setValue(reader.result);
-    };
-    reader.readAsText(xhr.response, 'utf-8');
 };
 
 var customPjax = function(aSelector, divSelector) {
@@ -119,12 +112,12 @@ var customPjax = function(aSelector, divSelector) {
         $(this).data('href', uri);
         $(this).on("click tap", function(evt) {
             window.backId && clearTimeout(window.backId);
+            $(this).trigger($.Event('customPjax:start'));
             $('select').each(function(k, dom) {
                 if ($(dom).hasClass('select2-hidden-accessible')) {
                     $(dom).select2('close');
                 }
             });
-            $(this).trigger($.Event('customPjax:start'));
             var loadDataAction = function(uri) {
                 doAjaxPromise(uri, "get", {}, {"X-PJAX": "true", "dataType": "text"})
                     .then(function(xhr) {
@@ -210,6 +203,7 @@ $.fn.customVal = function() {
             for (var oi = 0; oi < optionsDom.length; oi++) {
                 valueObj.push(optionsDom[oi].value);
             }
+            !(arguments[0] instanceof Array) && (arguments[0] = [arguments[0]]);
             for (var i = 0; i < arguments[0].length; i++) {
                 if (valueObj.indexOf(arguments[0][i]) < 0) {
                     if (typeof arguments[0][i] === 'object') {
@@ -219,10 +213,12 @@ $.fn.customVal = function() {
                         this.append($('<option />').attr("value", arguments[0][i]).text(arguments[0][i]));
                         selectedValueObj.push(arguments[0][i]);
                     }
+                } else {
+                    selectedValueObj.push(arguments[0][i]);
                 }
             }
             if (usedSelect2) {
-                return this.val(selectedValueObj).trigger("change");
+                return this.val(selectedValueObj).trigger('change');
             } else {
                 return this.val(selectedValueObj);
             }
@@ -320,14 +316,16 @@ $(function() {
     });
 });
 
-var searchWithForm = function(container, buttonDom) {
+var searchWithForm = function(container, formDom) {
+    var buttonDom = $(formDom).find('button[type="submit"]'),
+        allInput = $(formDom).find('input[type!="hidden"][name],textarea[name],select[name]');
     window.gridFilter = {};
-    for (var i = 2; i < arguments.length; i++) {
-        window.gridFilter[arguments[i].substr(1)] = $(arguments[i]).customVal();
-    }
-    $(buttonDom).prop("disabled", true);
-    $(container).jsGrid("reset");
+    allInput.each(function(k, dom) {
+        window.gridFilter[$(dom).attr('id')] = $(dom).customVal();
+    });
+    buttonDom.prop("disabled", true);
+    // $(container).jsGrid("reset");
     $(container).jsGrid("loadData").then(function() {
-        $(buttonDom).prop("disabled", false);
+        buttonDom.prop("disabled", false);
     });
 };
