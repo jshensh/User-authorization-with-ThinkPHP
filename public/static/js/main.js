@@ -119,6 +119,11 @@ var customPjax = function(aSelector, divSelector) {
         $(this).data('href', uri);
         $(this).on("click tap", function(evt) {
             window.backId && clearTimeout(window.backId);
+            $('select').each(function(k, dom) {
+                if ($(dom).hasClass('select2-hidden-accessible')) {
+                    $(dom).select2('close');
+                }
+            });
             $(this).trigger($.Event('customPjax:start'));
             var loadDataAction = function(uri) {
                 doAjaxPromise(uri, "get", {}, {"X-PJAX": "true", "dataType": "text"})
