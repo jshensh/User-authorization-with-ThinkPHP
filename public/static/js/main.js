@@ -66,6 +66,11 @@ var customPjax = function(aSelector, divSelector) {
     var pjaxEndEvent = $.Event('customPjax:end');
 
     var renderAction = function(divSelector, data, newTitle) {
+        $('select').each(function(k, dom) {
+            if ($(dom).hasClass('select2-hidden-accessible')) {
+                $(dom).select2('close');
+            }
+        });
         var responseDom = $(data);
         $(divSelector).html(responseDom);
         if (!$(divSelector).find("script").length) {
@@ -113,11 +118,6 @@ var customPjax = function(aSelector, divSelector) {
         $(this).on("click tap", function(evt) {
             window.backId && clearTimeout(window.backId);
             $(this).trigger($.Event('customPjax:start'));
-            $('select').each(function(k, dom) {
-                if ($(dom).hasClass('select2-hidden-accessible')) {
-                    $(dom).select2('close');
-                }
-            });
             var loadDataAction = function(uri) {
                 doAjaxPromise(uri, "get", {}, {"X-PJAX": "true", "dataType": "text"})
                     .then(function(xhr) {
@@ -175,7 +175,12 @@ var getQueryString = function(name) {
 
 var clearInput = function() {
     for (var i = 0; i < arguments.length; i++) {
-        $(arguments[i]).customVal('');
+        if (typeof $(arguments[i]).attr('multiple') !== 'undefined') {
+            $(arguments[i]).customVal([]);
+        } else {
+            $(arguments[i]).customVal('');
+        }
+        
     }
 };
 
