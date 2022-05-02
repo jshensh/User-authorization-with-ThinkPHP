@@ -27,6 +27,9 @@ class User extends Base
             return json(['status' => 'error', 'error' => '用户名或密码格式不正确'], 400);
         }
         $user = UserModel::get(['name' => $request->post('name')]);
+        if (!$user) {
+            return json(['status' => 'error', 'error' => '用户未注册'], 400);
+        }
         if (password_verify($request->post('pwd'), $user['pwd'])) {
             if (!$this->isAllowed('dashboard', 1, $user['group_id'])) {
                 return json(['status' => 'error', 'error' => '暂无访问权限，请您联系管理员处理'], 400);
