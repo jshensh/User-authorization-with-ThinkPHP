@@ -8,7 +8,7 @@
 {if (!request()->isPjax())}
 
         <!-- Bootstrap -->
-        <link rel="stylesheet" href="__STATIC__/css/bootstrap.min.css">
+        <link rel="stylesheet" href="__STATIC__/css/package/bootstrap/bootstrap.min.css">
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -16,32 +16,32 @@
           <script src="https://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
           <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
-        <link rel="stylesheet" href="__STATIC__/css/jsgrid.min.css">
-        <link rel="stylesheet" href="__STATIC__/css/jsgrid-theme.min.css">
-        <link rel="stylesheet" href="__STATIC__/css/toastr.min.css">
-        <link rel="stylesheet" href="__STATIC__/css/select2.min.css">
-        <link rel="stylesheet" href="__STATIC__/css/bootstrap-treeview.min.css">
+        <link rel="stylesheet" href="__STATIC__/css/package/jsgrid/jsgrid.min.css">
+        <link rel="stylesheet" href="__STATIC__/css/package/jsgrid/jsgrid-theme.min.css">
+        <link rel="stylesheet" href="__STATIC__/css/package/toastr/toastr.min.css">
+        <link rel="stylesheet" href="__STATIC__/css/package/select2/select2.min.css">
+        <link rel="stylesheet" href="__STATIC__/css/package/bootstrap/bootstrap-treeview.min.css">
         <link rel="stylesheet" href="__STATIC__/css/huajiLoading.min.css">
-        <link rel="stylesheet" href="__STATIC__/css/codemirror.css">
-        <link rel="stylesheet" href="__STATIC__/css/simplescrollbars.css">
-        <link rel="stylesheet" href="__STATIC__/css/codemirror-github-light-theme.css">
+        <link rel="stylesheet" href="__STATIC__/css/package/codemirror/codemirror.css">
+        <link rel="stylesheet" href="__STATIC__/css/package/codemirror/addon/scroll/simplescrollbars.css">
+        <link rel="stylesheet" href="__STATIC__/css/package/codemirror/theme/codemirror-github-light-theme.css">
         <!-- <link href="__STATIC__/css/app.css" rel="stylesheet"> -->
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="__STATIC__/js/jquery.min.js"></script>
+        <script src="__STATIC__/js/package/jquery/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="__STATIC__/js/bootstrap.min.js"></script>
-        <script src="__STATIC__/js/jquery.pjax.min.js"></script>
-        <script src="__STATIC__/js/jsgrid.min.js"></script>
-        <script src="__STATIC__/js/toastr.min.js"></script>
-        <script src="__STATIC__/js/jquery.cookie.min.js"></script>
-        <script src="__STATIC__/js/select2.min.js"></script>
-        <script src="__STATIC__/js/select2.zh-CN.js"></script>
-        <script src="__STATIC__/js/jquery.serialize-object.min.js"></script>
-        <script src="__STATIC__/js/codemirror.min.js"></script>
-        <script src="__STATIC__/js/codemirror.simplescrollbars.js"></script>
-        <script src="__STATIC__/js/codemirror.javascript.js"></script>
-        <script src="__STATIC__/js/masonry.pkgd.min.js"></script>{/if}
+        <script src="__STATIC__/js/package/bootstrap/bootstrap.min.js"></script>
+        <script src="__STATIC__/js/package/jquery/jquery.pjax.min.js"></script>
+        <script src="__STATIC__/js/package/jsgrid/jsgrid.min.js"></script>
+        <script src="__STATIC__/js/package/toastr/toastr.min.js"></script>
+        <script src="__STATIC__/js/package/jquery/jquery.cookie.min.js"></script>
+        <script src="__STATIC__/js/package/select2/select2.min.js"></script>
+        <script src="__STATIC__/js/package/select2/i18n/select2.zh-CN.js"></script>
+        <script src="__STATIC__/js/package/jquery/jquery.serialize-object.min.js"></script>
+        <script src="__STATIC__/js/package/codemirror/lib/codemirror.min.js"></script>
+        <script src="__STATIC__/js/package/codemirror/addon/scroll/simplescrollbars.js"></script>
+        <script src="__STATIC__/js/package/codemirror/mode/javascript/javascript.js"></script>
+        <script src="__STATIC__/js/package/masonry/masonry.pkgd.min.js"></script>{/if}
 {block name="css"}{/block}{if (!request()->isPjax())}
 
     </head>
@@ -81,8 +81,6 @@
             </div>
         </div>
     </body>
-    <link href="__STATIC__/css/jsgrid.min.css" rel="stylesheet">
-    <link href="__STATIC__/css/jsgrid.css" rel="stylesheet">
     <link href="__STATIC__/css/app.css" rel="stylesheet">
     <script src="__STATIC__/js/main.js"></script>{/if}
 {block name="javascript"}{/block}{if (!request()->isPjax())}
