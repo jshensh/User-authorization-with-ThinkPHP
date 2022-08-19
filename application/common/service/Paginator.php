@@ -29,14 +29,16 @@ class Paginator implements \JsonSerializable
      * @throws \Exception
      *
      * @param \think\db\Query|\think\model $model 需要操作的数据表模型
+     * @param bool $checkColumns 检查数据表模型的字段
      */
-    private function __construct($model)
+    private function __construct($model, $checkColumns)
     {
         $this->model = $model;
         $this->columns = Db::getConnection()->getFieldsType($model->getTable());
-        if (!$this->columns) {
+        if ($checkColumns && !$this->columns) {
             throw new \Exception('Table has no columns');
         }
+        $this->columns = $this->columns ? $this->columns : [];
         array_walk($this->columns, function(&$v) {
             $v = strstr($v, '(', true);
         });
@@ -140,6 +142,7 @@ class Paginator implements \JsonSerializable
         }
 
         if ($this->inputFields['sortField'] && $this->inputFields['sortOrder']) {
+            $this->inputFields['sortField'] = $this->inputFields['sortField'] === 'id2' ? 'id' : $this->inputFields['sortField'];
             $this->model = $this->model->order($this->inputFields['sortField'], $this->inputFields['sortOrder']);
         }
 
@@ -214,12 +217,13 @@ class Paginator implements \JsonSerializable
      * @access public
      *
      * @param string|\think\db\Query|\think\model $model Model 类名或实例化后的对象
+     * @param bool $checkColumns 检查数据表模型的字段
      *
      * @throws \Exception
      *
      * @return \app\common\service\Paginator
      */
-    public static function create($model)
+    public static function create($model, $checkColumns = true)
     {
         if (is_string($model)) {
             if (!class_exists($model)) {
@@ -229,7 +233,7 @@ class Paginator implements \JsonSerializable
         }
 
         if (is_object($model) && ($model instanceof \think\db\Query || $model instanceof \think\model)) {
-            return new self($model);
+            return new self($model, $checkColumns);
         }
 
         throw new \Exception('Model not supported');

@@ -8,7 +8,7 @@
 {if (!request()->isPjax())}
 
         <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+        <link rel="stylesheet" href="__STATIC__/css/bootstrap.min.css">
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -16,25 +16,32 @@
           <script src="https://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
           <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid.min.css" integrity="sha256-a/jNbtm7jpeKiXCShJ8YC+eNL9Abh7CBiYXHgaofUVs=" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid-theme.min.css" integrity="sha256-0rD7ZUV4NLK6VtGhEim14ZUZGC45Kcikjdcr4N03ddA=" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.css" integrity="sha256-R91pD48xW+oHbpJYGn5xR0Q7tMhH4xOrWn1QqMRINtA=" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" integrity="sha256-FdatTf20PQr/rWg+cAKfl6j4/IY3oohFAJ7gVC3M34E=" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-treeview@1.2.0/dist/bootstrap-treeview.min.css" integrity="sha256-ULjuiZ9iqqf97EETp/mZrnLusfOwISiI6AIL0IXShbc=" crossorigin="anonymous">
-        <link href="__STATIC__/css/huajiLoading.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="__STATIC__/css/jsgrid.min.css">
+        <link rel="stylesheet" href="__STATIC__/css/jsgrid-theme.min.css">
+        <link rel="stylesheet" href="__STATIC__/css/toastr.min.css">
+        <link rel="stylesheet" href="__STATIC__/css/select2.min.css">
+        <link rel="stylesheet" href="__STATIC__/css/bootstrap-treeview.min.css">
+        <link rel="stylesheet" href="__STATIC__/css/huajiLoading.min.css">
+        <link rel="stylesheet" href="__STATIC__/css/codemirror.css">
+        <link rel="stylesheet" href="__STATIC__/css/simplescrollbars.css">
+        <link rel="stylesheet" href="__STATIC__/css/codemirror-github-light-theme.css">
         <!-- <link href="__STATIC__/css/app.css" rel="stylesheet"> -->
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+        <script src="__STATIC__/js/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/jquery-pjax@2.0.1/jquery.pjax.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid.min.js" integrity="sha256-lzjMTpg04xOdI+MJdjBst98bVI6qHToLyVodu3EywFU=" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.js" integrity="sha256-Hgwq1OBpJ276HUP9H3VJkSv9ZCGRGQN+JldPJ8pNcUM=" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js" integrity="sha256-AFAYEOkzB6iIKnTYZOdUf9FFje6lOTYdwRJKwTN5mks=" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/i18n/zh-CN.js" integrity="sha256-olAdvPQ5qsN9IZuxAKgDVQM+blexUnWTDTXUtiorygI=" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/gh/macek/jquery-serialize-object@2.5.0/dist/jquery.serialize-object.min.js"></script>{/if}
+        <script src="__STATIC__/js/bootstrap.min.js"></script>
+        <script src="__STATIC__/js/jquery.pjax.min.js"></script>
+        <script src="__STATIC__/js/jsgrid.min.js"></script>
+        <script src="__STATIC__/js/toastr.min.js"></script>
+        <script src="__STATIC__/js/jquery.cookie.min.js"></script>
+        <script src="__STATIC__/js/select2.min.js"></script>
+        <script src="__STATIC__/js/select2.zh-CN.js"></script>
+        <script src="__STATIC__/js/jquery.serialize-object.min.js"></script>
+        <script src="__STATIC__/js/codemirror.min.js"></script>
+        <script src="__STATIC__/js/codemirror.simplescrollbars.js"></script>
+        <script src="__STATIC__/js/codemirror.javascript.js"></script>
+        <script src="__STATIC__/js/masonry.pkgd.min.js"></script>{/if}
 {block name="css"}{/block}{if (!request()->isPjax())}
 
     </head>
@@ -49,7 +56,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#">Dashboard</a>
+                        <a class="navbar-brand" href="#">杏园团购</a>
                     </div>
 
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
@@ -74,7 +81,7 @@
             </div>
         </div>
     </body>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsgrid@1.5.3/dist/jsgrid.min.css" integrity="sha256-a/jNbtm7jpeKiXCShJ8YC+eNL9Abh7CBiYXHgaofUVs=" crossorigin="anonymous">
+    <link href="__STATIC__/css/jsgrid.min.css" rel="stylesheet">
     <link href="__STATIC__/css/jsgrid.css" rel="stylesheet">
     <link href="__STATIC__/css/app.css" rel="stylesheet">
     <script src="__STATIC__/js/main.js"></script>{/if}
@@ -82,6 +89,11 @@
     <style>
         body {
             font-family: "Microsoft Yahei","Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Hiragino Sans GB W3","WenQuanYi Micro Hei",sans-serif;
+        }
+        .form-horizontal .control-label {
+            padding-top: 7px;
+            margin-bottom: 0;
+            text-align: right;
         }
     </style>
 </html>{/if}
